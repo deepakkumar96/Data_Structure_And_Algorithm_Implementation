@@ -13,9 +13,23 @@ class Bst<E extends Comparable<E>> extends AbstractSet<E>
           addAll(c);
       }
 
+      /* Main BST operations */
+
+      // Bst insert operation
+      private Node<E> bstInsert(Node<E> node, E key){
+          if(node == null)
+              return new Node<E>(null, key, null);
+          if(key.compareTo(node.data) <  0)
+              node.left = bstInsert(node.left, key);
+          if(key.compareTo(node.data) >  0)
+              node.right = bstInsert(node.right, key);
+          return node;
+      }
+
+
       @Override
       public boolean add(E data){
-          root = __add(root, data);
+          root = bstInsert(root, data);
           size++;
           return true;
       }
@@ -25,22 +39,8 @@ class Bst<E extends Comparable<E>> extends AbstractSet<E>
           return size;
       }
 
-      @Override
-      public Iterator<E> iterator(){
-          return new PreOrderIterator(root);
-      }
 
-      // Bst insert operation
-      private Node<E> __add(Node<E> node, E key){
-          if(node == null)
-              return new Node<E>(null, key, null);
-          if(key.compareTo(node.data) <  0)
-              node.left = __add(node.left, key);
-          if(key.compareTo(node.data) >  0)
-              node.right = __add(node.right, key);
-          return node;
-      }
-
+      // Traversal
       public String preOrder(Node<E> node, StringBuilder sb){
           if(node != null){
               sb.append(node.data).append(" ");
@@ -57,6 +57,11 @@ class Bst<E extends Comparable<E>> extends AbstractSet<E>
               inOrder(node.right, sb);
           }
           return sb.toString();
+      }
+
+      @Override
+      public Iterator<E> iterator(){
+          return new PreOrderIterator(root);
       }
 
       @Override
@@ -78,7 +83,7 @@ class Bst<E extends Comparable<E>> extends AbstractSet<E>
           }
       }
 
-      public static class PreOrderIterator<E> implements Iterator<E>{
+      private static class PreOrderIterator<E> implements Iterator<E>{
 
           Node<E> root;
           Stack<Node<E>> stk = new Stack<>();
