@@ -3,7 +3,7 @@ import java.util.stream.*;
 
 public class Stack<E extends Comparable<E>> {
 
-    //private int size;
+    private Comparable minVal;
     private int curr = -1;
     private Comparable[] data;
     private final int defaultSize = 8;
