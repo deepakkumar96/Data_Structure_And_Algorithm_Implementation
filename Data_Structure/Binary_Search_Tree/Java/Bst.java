@@ -59,6 +59,21 @@ class Bst<E extends Comparable<E>> extends AbstractSet<E>
           return sb.toString();
       }
 
+      public <T extends Number> int addGreaterToAll(Node<T> node, int sum, Adder<T> adder){
+          if(node == null)
+              return sum;
+          sum += addGreaterToAll(node.right, sum, adder);
+          sum += node.data.intValue();
+          node.data = (T)adder.add((T)new Integer(sum), (T)new Integer(node.data.intValue()));
+          sum += addGreaterToAll(node.left, sum, adder);
+          System.out.println("--"+node.data +" - "+sum);
+          return sum;
+      }
+
+      public <T extends Number> int addGreaterToAll(Adder<T> adder){
+            return addGreaterToAll((Node<T>)root, 0, adder);
+      }
+
       @Override
       public Iterator<E> iterator(){
           return new PreOrderIterator(root);
@@ -76,11 +91,19 @@ class Bst<E extends Comparable<E>> extends AbstractSet<E>
           E data;
           Node<E> right;
 
+          public Node(){}
+
           public Node(Node<E> left, E data, Node<E> right){
               this.data = data;
               this.left = left;
               this.right = right;
           }
+      }
+
+      private static class HashNode extends Node{}
+
+      public static interface Adder<T extends Number>{
+          T add(T v1, T v2);
       }
 
       private static class PreOrderIterator<E> implements Iterator<E>{

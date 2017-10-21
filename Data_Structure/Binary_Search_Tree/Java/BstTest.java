@@ -2,13 +2,19 @@ import java.util.*;
 
 public class BstTest{
     public static void main(String...args) throws Exception{
-        Bst<Integer> bst = new Bst<Integer>(Arrays.asList(1,2,3,4,5,6));
+        Bst<Integer> bst = new Bst<Integer>(Arrays.asList(50, 30, 20, 40, 70, 60, 80));
         Collection<Integer> coll = bst;
 
-        bst.add(100);
-
         System.out.println(coll);
-        System.out.println(coll.contains(7));
+
+        bst.addGreaterToAll(new Bst.Adder<Integer>(){
+          @Override
+          public Integer add(Integer v1, Integer v2){
+              System.out.println(v1 + " " + v2);
+              return v1+v2;
+          }
+        });
+
         for(Integer i: coll){
             System.out.println(i+ " ");
         }
